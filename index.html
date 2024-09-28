@@ -78,9 +78,10 @@
             color: white;
         }
         .reset-btn {
-        position: absolute;
-        bottom: 30px;
-        right: 30px;
+        position: relative;
+        bottom: 10px;
+        display: block;
+        margin: auto;
         background-color: #f44336;
         color: white;
         border: none;
@@ -166,12 +167,12 @@
         <div class="score">
             <span class="active">S</span> <span id="score-s">0</span> : <span id="score-b">0</span> <span>B</span>
         </div>
-        <button id="reset-btn" class="reset-btn">Reset Score</button>
         <!-- Add this inside the .container div, below the table and above the score section -->
         <div class="round-controls">
             <button id="add-round-btn" class="round-btn">+ Add Round</button>
             <button id="remove-round-btn" class="round-btn">- Remove Round</button>
         </div>
+        <button id="reset-btn" class="reset-btn">Reset Score</button>
 
     </div>
 
