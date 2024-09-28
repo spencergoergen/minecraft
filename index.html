@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minecraft Item Game Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f0f0f0;
+            font-weight: bold;
+        }
+        input[type="text"] {
+            width: 80%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        .winner-btn {
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            border: 2px solid #ccc;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .active {
+            background-color: gray;
+            color: white;
+        }
+        .score {
+            font-size: 1.5rem;
+            text-align: center;
+            margin-top: 30px;
+        }
+        .score span {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background-color: #ccc;
+            border-radius: 50%;
+            line-height: 40px;
+            text-align: center;
+        }
+        .score .active {
+            background-color: gray;
+            color: white;
+        }
+        .reset-btn {
+        position: absolute;
+        bottom: 30px;
+        right: 30px;
+        background-color: #f44336;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        font-size: 1rem;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .reset-btn:hover {
+        background-color: #d32f2f;
+    }
+
+    .round-controls {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+        margin-top: 20px;
+    }
+
+    .round-btn {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        font-size: 1rem;
+        border-radius: 5px;
+        cursor: pointer;
+        margin: 0 10px;
+    }
+
+    .round-btn:hover {
+        background-color: #45a049;
+    }
+
+    .round-btn:nth-child(2) {
+        background-color: #f44336;
+    }
+
+    .round-btn:nth-child(2):hover {
+        background-color: #d32f2f;
+    }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Minecraft Item Game Tracker</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Round</th>
+                    <th>Item</th>
+                    <th>Winner</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Round 1</td>
+                    <td><input type="text" value="Minecraft Item" id="item-round-1"></td>
+                    <td>
+                        <span class="winner-btn" data-round="1" data-winner="S">S</span>
+                        <span class="winner-btn" data-round="1" data-winner="B">B</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Round 2</td>
+                    <td><input type="text" value="Minecraft Item" id="item-round-2"></td>
+                    <td>
+                        <span class="winner-btn" data-round="2" data-winner="S">S</span>
+                        <span class="winner-btn" data-round="2" data-winner="B">B</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Round 3</td>
+                    <td><input type="text" value="Minecraft Item" id="item-round-3"></td>
+                    <td>
+                        <span class="winner-btn" data-round="3" data-winner="S">S</span>
+                        <span class="winner-btn" data-round="3" data-winner="B">B</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="score">
+            <span class="active">S</span> <span id="score-s">0</span> : <span id="score-b">0</span> <span>B</span>
+        </div>
+        <button id="reset-btn" class="reset-btn">Reset Score</button>
+        <!-- Add this inside the .container div, below the table and above the score section -->
+        <div class="round-controls">
+            <button id="add-round-btn" class="round-btn">+ Add Round</button>
+            <button id="remove-round-btn" class="round-btn">- Remove Round</button>
+        </div>
+
+    </div>
+
+    <script>
+        let scoreS = 0;
+        let scoreB = 0;
+        // Add this to the <script> section at the end
+
+let roundCount = 3; // We start with 3 rounds by default
+
+// Function to add a new round
+document.getElementById('add-round-btn').addEventListener('click', function () {
+    roundCount++;
+    
+    const tbody = document.querySelector('tbody');
+    const newRow = document.createElement('tr');
+    
+    newRow.innerHTML = `
+        <td>Round ${roundCount}</td>
+        <td><input type="text" value="Minecraft Item" id="item-round-${roundCount}"></td>
+        <td>
+            <span class="winner-btn" data-round="${roundCount}" data-winner="S">S</span>
+            <span class="winner-btn" data-round="${roundCount}" data-winner="B">B</span>
+        </td>
+    `;
+    
+    tbody.appendChild(newRow);
+
+    // Add event listeners to the new winner buttons
+    document.querySelectorAll(`.winner-btn[data-round="${roundCount}"]`).forEach(button => {
+        button.addEventListener('click', function () {
+            const round = this.getAttribute('data-round');
+            const winner = this.getAttribute('data-winner');
+
+            // Clear previous selection for the round
+            document.querySelectorAll(`.winner-btn[data-round="${round}"]`).forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Set new selection
+            this.classList.add('active');
+
+            // Update scores
+            if (winner === 'S') {
+                scoreS++;
+            } else if (winner === 'B') {
+                scoreB++;
+            }
+
+            // Update score display
+            document.getElementById('score-s').textContent = scoreS;
+            document.getElementById('score-b').textContent = scoreB;
+        });
+    });
+});
+
+// Function to remove the last round
+document.getElementById('remove-round-btn').addEventListener('click', function () {
+    if (roundCount > 1) {  // Ensure there's at least one round
+        const tbody = document.querySelector('tbody');
+        tbody.removeChild(tbody.lastElementChild);
+        roundCount--;
+    }
+});
+
+
+        const buttons = document.querySelectorAll('.winner-btn');
+
+        // Add this to the <script> section at the end
+            document.getElementById('reset-btn').addEventListener('click', function () {
+                scoreS = 0;
+                scoreB = 0;
+                document.getElementById('score-s').textContent = scoreS;
+                document.getElementById('score-b').textContent = scoreB;
+
+                // Reset the winner button styles
+                buttons.forEach(button => {
+                    button.classList.remove('active');
+                });
+            });
+
+
+        buttons.forEach(button => {
+            button.addEventListener('click', function () {
+                const round = this.getAttribute('data-round');
+                const winner = this.getAttribute('data-winner');
+
+                // Clear previous selection for the round
+                document.querySelectorAll(`.winner-btn[data-round="${round}"]`).forEach(btn => {
+                    btn.classList.remove('active');
+                });
+
+                // Set new selection
+                this.classList.add('active');
+
+                // Update scores
+                if (winner === 'S') {
+                    scoreS++;
+                } else if (winner === 'B') {
+                    scoreB++;
+                }
+
+                // Update score display
+                document.getElementById('score-s').textContent = scoreS;
+                document.getElementById('score-b').textContent = scoreB;
+            });
+        });
+    </script>
+</body>
+</html>
